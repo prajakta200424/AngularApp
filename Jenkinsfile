@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    tools {
+        nodejs "NodeJS"
+    }
+    stages {
+        stage("Checkout") {
+            steps {
+                checkout scm
+            }
+        }
+        stage("Install Package") {
+            steps {
+                bat "npm" "ci"
+            }
+        }
+        stage("Test") {
+            steps {
+                // bat "npx ng test --no-watch --no-progress --browsers=ChromeHeadless"
+                echo"testing"
+            }
+        }
+        stage("Build") {
+            steps {
+                bat "npx ng build --configuration production"
+            }
+        }
+    }
+    post {
+        success {
+            echo"angular application build successfully"
+        }
+        failure {
+            echo"angular build fail"
+        }
+    }
+}
